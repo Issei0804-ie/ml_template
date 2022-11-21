@@ -1,11 +1,12 @@
-import torch
 import pytorch_lightning as pl
+import torch
 import torchmetrics
-from torchvision.models import resnet18, vgg13
 from torchmetrics import F1Score
+from torchvision.models import resnet18, vgg13
+
 
 class ImageClassifierResnet(torch.nn.Module):
-    def __init__(self, lr:float, num_classes:int):
+    def __init__(self, lr: float, num_classes: int):
         super().__init__()
         self.model = resnet18(pretrained=True)
         num_last_features = self.resnet.fc.out_features
@@ -17,8 +18,9 @@ class ImageClassifierResnet(torch.nn.Module):
         logits = self.regressor(outputs)
         return torch.nn.functional.softmax(logits, 1)
 
+
 class ImageClassifierVGG(torch.nn.Module):
-    def __init__(self, lr:float, num_classes):
+    def __init__(self, lr: float, num_classes):
         super().__init__()
         self.model = vgg13(pretrained=True)
         self.regressor = torch.nn.Linear(1000, num_classes)
@@ -28,6 +30,7 @@ class ImageClassifierVGG(torch.nn.Module):
         outputs = self.model(image)
         logits = self.regressor(outputs)
         return torch.nn.functional.softmax(logits, 1)
+
 
 class TrainModel(pl.LightningModule):
     def __init__(self, lr, model, num_classes):

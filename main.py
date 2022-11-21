@@ -24,10 +24,12 @@ dataset = src.dataset_builder.LabeledDataset(conf.DATA_SET, filepath2label)
 
 n_samples = len(dataset)
 train_size = int(len(dataset) * 0.6)
-val_size = int(len(dataset)*0.2)
-test_size = n_samples - (train_size+val_size)
+val_size = int(len(dataset) * 0.2)
+test_size = n_samples - (train_size + val_size)
 
-train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, val_size,test_size])
+train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(
+    dataset, [train_size, val_size, test_size]
+)
 
 
 train_loader = torch.utils.data.DataLoader(
@@ -71,4 +73,3 @@ trainer.fit(model, train_loader, val_loader)
 
 test = trainer.test(model, test_loader)
 print(test)
-
